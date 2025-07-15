@@ -7,7 +7,7 @@ import mss
 import mss.tools
 import time
 from datetime import datetime
-
+from PIL import Image
 
 class ebookToPDF:
 
@@ -191,7 +191,13 @@ class Capture:
         with mss.mss() as sct:
             monitor = {"top": self.region[1], "left": self.region[0], "width": self.region[2], "height": self.region[3]}
             screenshot = sct.grab(monitor)
-            mss.tools.to_png(screenshot.rgb, screenshot.size, output=save_dir)
+            # mss.tools.to_png(screenshot.rgb, screenshot.size, output=save_dir)
+            img = Image.frombytes(
+                "RGB",  # mode
+                screenshot.size,  # (width, height)
+                screenshot.rgb,  # data
+            )
+            img.save(save_dir, dpi=(320, 320))
             
     def selectMoveToNextPageOption(self,num):
         if num == 0:
